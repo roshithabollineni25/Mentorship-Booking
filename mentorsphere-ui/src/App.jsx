@@ -1,4 +1,22 @@
+import { useEffect, useState } from "react";
+import API from "./services/api";
+
 function App() {
+  const [mentors, setMentors] = useState([]);
+
+  useEffect(() => {
+    loadMentors();
+  }, []);
+
+  const loadMentors = async () => {
+    try {
+      const response = await API.get("/Mentors");
+      setMentors(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div
       style={{
@@ -7,7 +25,6 @@ function App() {
         fontFamily: "Arial, sans-serif",
       }}
     >
-      {/* Navbar */}
       <nav
         style={{
           backgroundColor: "#2563eb",
@@ -27,21 +44,13 @@ function App() {
         </div>
       </nav>
 
-      {/* Hero Section */}
       <div
         style={{
           textAlign: "center",
-          padding: "100px 20px",
+          padding: "80px 20px",
         }}
       >
-        <h1
-          style={{
-            fontSize: "55px",
-            marginBottom: "20px",
-          }}
-        >
-          Find Your Perfect Mentor
-        </h1>
+        <h1>Find Your Perfect Mentor</h1>
 
         <p
           style={{
@@ -49,93 +58,50 @@ function App() {
             color: "gray",
           }}
         >
-          Connect with Industry Experts and Book
-          One-on-One Mentorship Sessions
+          Connect with Industry Experts
         </p>
-
-        <div style={{ marginTop: "30px" }}>
-          <button
-            style={{
-              backgroundColor: "#2563eb",
-              color: "white",
-              border: "none",
-              padding: "15px 30px",
-              borderRadius: "10px",
-              marginRight: "15px",
-              cursor: "pointer",
-            }}
-          >
-            Find Mentors
-          </button>
-
-          <button
-            style={{
-              backgroundColor: "#22c55e",
-              color: "white",
-              border: "none",
-              padding: "15px 30px",
-              borderRadius: "10px",
-              cursor: "pointer",
-            }}
-          >
-            Become a Mentor
-          </button>
-        </div>
       </div>
 
-      {/* Mentor Cards */}
       <div
         style={{
-          display: "flex",
-          justifyContent: "center",
+          display: "grid",
+          gridTemplateColumns:
+            "repeat(auto-fit,minmax(250px,1fr))",
           gap: "20px",
-          padding: "20px",
+          padding: "40px",
         }}
       >
-        <div
-          style={{
-            background: "white",
-            padding: "20px",
-            borderRadius: "12px",
-            width: "250px",
-            boxShadow: "0 0 10px rgba(0,0,0,0.1)",
-          }}
-        >
-          <h3>John Doe</h3>
-          <p>Python Expert</p>
-          <p>5 Years Experience</p>
-          <p>₹500/hr</p>
-        </div>
+        {mentors.map((mentor) => (
+          <div
+            key={mentor.id}
+            style={{
+              background: "white",
+              padding: "20px",
+              borderRadius: "12px",
+              boxShadow:
+                "0 0 10px rgba(0,0,0,0.1)",
+            }}
+          >
+            <h3>{mentor.name}</h3>
 
-        <div
-          style={{
-            background: "white",
-            padding: "20px",
-            borderRadius: "12px",
-            width: "250px",
-            boxShadow: "0 0 10px rgba(0,0,0,0.1)",
-          }}
-        >
-          <h3>Sarah Johnson</h3>
-          <p>AWS Architect</p>
-          <p>8 Years Experience</p>
-          <p>₹1000/hr</p>
-        </div>
+            <p>
+              <b>Expertise:</b>{" "}
+              {mentor.expertise}
+            </p>
 
-        <div
-          style={{
-            background: "white",
-            padding: "20px",
-            borderRadius: "12px",
-            width: "250px",
-            boxShadow: "0 0 10px rgba(0,0,0,0.1)",
-          }}
-        >
-          <h3>David Smith</h3>
-          <p>DevOps Engineer</p>
-          <p>6 Years Experience</p>
-          <p>₹800/hr</p>
-        </div>
+            <p>
+              <b>Experience:</b>{" "}
+              {mentor.experience} years
+            </p>
+
+            <p>
+              <b>Fee:</b> ₹
+              {mentor.hourly_fee}/hr
+            </p>
+
+            <p>{mentor.bio}</p>
+          </div>
+        ))}
       </div>
     </div>
   );

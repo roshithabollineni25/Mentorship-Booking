@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_restx import Api
+from flask_cors import CORS
 
 from config.database import mongo
 
@@ -14,7 +15,11 @@ from routes.analytics import analytics_ns
 from routes.availability import availability_ns
 
 
+
+
 app = Flask(__name__)
+
+CORS(app)
 
 # MongoDB Atlas URI
 app.config["MONGO_URI"] = "mongodb+srv://roshitha25:Roshitha@cluster0.ujvcnp7.mongodb.net/mentorsphere?retryWrites=true&w=majority"
