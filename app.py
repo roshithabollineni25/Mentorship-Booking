@@ -38,6 +38,14 @@ api.add_namespace(review_ns)
 api.add_namespace(analytics_ns)
 api.add_namespace(availability_ns)
 
+@app.route("/testdb")
+def testdb():
+    try:
+        count = mongo.db.users.count_documents({})
+        return {"status": "connected", "users": count}
+    except Exception as e:
+        return {"error": str(e)}
+
 if __name__ == "__main__":
     app.run(
         host="0.0.0.0",
