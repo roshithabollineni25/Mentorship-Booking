@@ -22,8 +22,9 @@ app = Flask(__name__)
 CORS(app)
 
 # MongoDB Atlas URI
-app.config["MONGO_URI"] = "mongodb+srv://roshitha25:Roshitha@cluster0.ujvcnp7.mongodb.net/mentorsphere?retryWrites=true&w=majority"
+import os
 
+app.config["MONGO_URI"] = os.getenv("MONGO_URI")
 mongo.init_app(app)
 
 api = Api(
